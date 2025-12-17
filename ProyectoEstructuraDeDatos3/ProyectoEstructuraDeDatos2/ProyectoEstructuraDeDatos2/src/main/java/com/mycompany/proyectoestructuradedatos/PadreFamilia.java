@@ -1,25 +1,28 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.mycompany.proyectoestructuradedatos;
 
-import javax.swing.JOptionPane;
 
 
 public class PadreFamilia extends Persona {  
 
-    private Deportista nombreDeportista;
+    private Deportista hijo;
 
-    public PadreFamilia(Deportista nombreDeportista) {
-        this.nombreDeportista = nombreDeportista;
+    public PadreFamilia(Deportista hijo) {
+        this.hijo = hijo;
     }
 
-    public void agregarPadre(Deportista NombreNino){
-        this.nombreDeportista = NombreNino;
-        setApellidos(JOptionPane.showInputDialog("Ingrese los apellidos del padre: "));
-        setCiudad(JOptionPane.showInputDialog("Ingrese la ciudad de residencia del Padre: "));
-        setCorreo(JOptionPane.showInputDialog("Ingrese el correo electronico del padre: "));
-        setDireccion(JOptionPane.showInputDialog("Ingrese la direccion de residencia del padre: "));
+    public void agregarPadre(String nombre, String apellidos, String ciudad, String direccion, String telefono, String correo, Deportista hijo) {
+        setNombre(nombre);
+        setApellidos(apellidos);
+        setCiudad(ciudad);
+        setDireccion(direccion);
+        setTelefono(telefono);
+        setCorreo(correo);
         setEstado(true);
-        setNombre(JOptionPane.showInputDialog("Ingrese el nombre del padre: "));
-        setTelefono(JOptionPane.showInputDialog("Ingrese el numero de telefono del padre del padre: "));
+        this.hijo = hijo;
     }
     
     public void editarPadre(String nombreNino){
@@ -33,68 +36,12 @@ public class PadreFamilia extends Persona {
         return null;
     }
 
-    public Deportista getNombreDeportista() {
-        return nombreDeportista;
+    public Deportista getHijo() {
+        return hijo;
     }
 
-    public void setNombreDeportista(Deportista nombreDeportista) {
-        this.nombreDeportista = nombreDeportista;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public boolean isEstado() {
-        return estado;
-    }
-
-    public void setEstado(boolean estado) {
-        this.estado = estado;
+    public void setHijo(Deportista hijo) {
+        this.hijo = hijo;
     }
     
     

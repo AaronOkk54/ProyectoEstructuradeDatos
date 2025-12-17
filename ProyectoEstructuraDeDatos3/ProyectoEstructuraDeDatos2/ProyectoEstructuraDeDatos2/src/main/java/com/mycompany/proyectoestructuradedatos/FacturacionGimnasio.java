@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.mycompany.proyectoestructuradedatos;
 
 import java.time.LocalDate;
@@ -5,23 +9,8 @@ import java.time.LocalTime;
 
 public class FacturacionGimnasio {
 
-    private static ListaDeportistas listaDeportistas = new ListaDeportistas();
-    private static ListaAsignacionesRutinas asignaciones = new ListaAsignacionesRutinas(100);
-
-
-
-
-
-
-    private static Facturacion facturacion = new Facturacion(100);
-
-
-
-
-
-
     public static String obtenerNombreDeportista(String id) {
-        Deportista deportista = listaDeportistas.buscarDeportistaPorID(id);
+        Deportista deportista = Central.deportistas.buscarDeportistaPorID(id);
         if (deportista != null) {
             return deportista.getNombre() + " " + (deportista.getApellidos() == null ? "" : deportista.getApellidos());
         }
@@ -29,29 +18,44 @@ public class FacturacionGimnasio {
     }
 
     public static String obtenerRutinaDelMes(String idDeportista, String mes) {
-        String descripcion = asignaciones.obtenerDescripcion(idDeportista, mes);
+        String descripcion = Central.asignaciones.obtenerDescripcion(idDeportista, mes);
         if (descripcion != null) return descripcion;
-        return "No tiene rutina asignada para este mes";
+        return null;
     }
 
-    public static void generarFactura(String idDeportista, String mes, double monto) {
+    
+
+
+    
+    public static Factura crearFactura(String idDeportista, String mes) {
+        if (Central.facturacion.existeFacturaPara(idDeportista, mes)) {
+            return null;
+        }
+
         String nombre = obtenerNombreDeportista(idDeportista);
+        if (nombre.equals("Deportista no encontrado")) {
+            return null;
+        }
+
         String rutina = obtenerRutinaDelMes(idDeportista, mes);
+        if (rutina == null) {
+            return null;
+        }
 
-        System.out.println("===== FACTURA =====");
-        System.out.println("Cliente: " + nombre);
-        System.out.println("Mes: " + mes);
-        System.out.println("Rutina asignada: " + rutina);
-        System.out.println("Monto a pagar: ₡" + monto);
-        System.out.println("===================");
+        String fecha = LocalDate.now().toString();
+        String hora = LocalTime.now().toString();
+        String descripcion = rutina; 
+
+        Factura f = new Factura(fecha, hora, descripcion, nombre, idDeportista, mes);
+        if (Central.facturacion.agregarFactura(f)) {
+            return f;
+        } else {
+            return null;
+        }
     }
-
-
-
-
 
     public static boolean facturarMensual(String idDeportista, String mes, double monto) {
-        if (facturacion.existeFacturaPara(idDeportista, mes)) {
+        if (Central.facturacion.existeFacturaPara(idDeportista, mes)) {
             System.out.println("Ya existe factura para el deportista " + idDeportista + " y mes " + mes);
             return false;
         }
@@ -64,7 +68,7 @@ public class FacturacionGimnasio {
         String descripcion = rutina + " (Monto: " + monto + ")";
 
         Factura f = new Factura(fecha, hora, descripcion, nombre, idDeportista, mes);
-        if (facturacion.agregarFactura(f)) {
+        if (Central.facturacion.agregarFactura(f)) {
             System.out.println("Factura registrada...");
             return true;
         } else {
@@ -75,7 +79,7 @@ public class FacturacionGimnasio {
 
 
     public static boolean anularFactura(String idDeportista, String mes) {
-        if (facturacion.anularFacturaPorIdYMes(idDeportista, mes) == false) {
+        if (Central.facturacion.anularFacturaPorIdYMes(idDeportista, mes) == false) {
             System.out.println("Factura no encontrada.");
             return false;
         }
